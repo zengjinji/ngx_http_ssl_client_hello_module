@@ -1,0 +1,65 @@
+diff --git a/src/http/ngx_http.h b/src/http/ngx_http.h
+index 8b43857e..cf0ae893 100644
+--- a/src/http/ngx_http.h
++++ b/src/http/ngx_http.h
+@@ -85,6 +85,14 @@ ngx_int_t ngx_http_add_listen(ngx_conf_t *cf, ngx_http_core_srv_conf_t *cscf,
+ void ngx_http_init_connection(ngx_connection_t *c);
+ void ngx_http_close_connection(ngx_connection_t *c);
+ 
++#ifdef NGX_HTTP_SSL_CLIENT_HELLO
++ngx_int_t ngx_http_validate_host(ngx_str_t *host, ngx_pool_t *pool,
++    ngx_uint_t alloc);
++ngx_int_t ngx_http_find_virtual_server(ngx_connection_t *c,
++    ngx_http_virtual_names_t *virtual_names, ngx_str_t *host,
++    ngx_http_request_t *r, ngx_http_core_srv_conf_t **cscfp);
++#endif
++
+ #if (NGX_HTTP_SSL && defined SSL_CTRL_SET_TLSEXT_HOSTNAME)
+ int ngx_http_ssl_servername(ngx_ssl_conn_t *ssl_conn, int *ad, void *arg);
+ #endif
+diff --git a/src/http/ngx_http_request.c b/src/http/ngx_http_request.c
+index 80c19656..dff77f6c 100644
+--- a/src/http/ngx_http_request.c
++++ b/src/http/ngx_http_request.c
+@@ -31,13 +31,17 @@ static ngx_int_t ngx_http_process_connection(ngx_http_request_t *r,
+ static ngx_int_t ngx_http_process_user_agent(ngx_http_request_t *r,
+     ngx_table_elt_t *h, ngx_uint_t offset);
+ 
++#ifndef NGX_HTTP_SSL_CLIENT_HELLO
+ static ngx_int_t ngx_http_validate_host(ngx_str_t *host, ngx_pool_t *pool,
+     ngx_uint_t alloc);
++#endif
+ static ngx_int_t ngx_http_set_virtual_server(ngx_http_request_t *r,
+     ngx_str_t *host);
++#ifndef NGX_HTTP_SSL_CLIENT_HELLO
+ static ngx_int_t ngx_http_find_virtual_server(ngx_connection_t *c,
+     ngx_http_virtual_names_t *virtual_names, ngx_str_t *host,
+     ngx_http_request_t *r, ngx_http_core_srv_conf_t **cscfp);
++#endif
+ 
+ static void ngx_http_request_handler(ngx_event_t *ev);
+ static void ngx_http_terminate_request(ngx_http_request_t *r, ngx_int_t rc);
+@@ -2056,7 +2060,11 @@ ngx_http_process_request(ngx_http_request_t *r)
+ }
+ 
+ 
++#ifdef NGX_HTTP_SSL_CLIENT_HELLO
++ngx_int_t
++#else
+ static ngx_int_t
++#endif
+ ngx_http_validate_host(ngx_str_t *host, ngx_pool_t *pool, ngx_uint_t alloc)
+ {
+     u_char  *h, ch;
+@@ -2230,7 +2238,11 @@ ngx_http_set_virtual_server(ngx_http_request_t *r, ngx_str_t *host)
+ }
+ 
+ 
++#ifdef NGX_HTTP_SSL_CLIENT_HELLO
++ngx_int_t
++#else
+ static ngx_int_t
++#endif
+ ngx_http_find_virtual_server(ngx_connection_t *c,
+     ngx_http_virtual_names_t *virtual_names, ngx_str_t *host,
+     ngx_http_request_t *r, ngx_http_core_srv_conf_t **cscfp)
