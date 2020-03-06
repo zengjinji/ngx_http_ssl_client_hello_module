@@ -187,8 +187,6 @@ sub ssl_get {
 	alarm(0);
 
 	if ($@) {
-		#log_in("died: $@");
-        #print "$@\n" if $@;
 		return $@;
 	}
 

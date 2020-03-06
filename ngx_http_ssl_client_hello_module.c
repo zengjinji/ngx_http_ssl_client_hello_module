@@ -37,32 +37,32 @@ static ngx_command_t  ngx_http_ssl_client_hello_commands[] = {
 
 
 static ngx_http_module_t  ngx_http_ssl_client_hello_module_ctx = {
-    NULL,                                     /* preconfiguration */
-    NULL,                                     /* postconfiguration */
+    NULL,                                         /* preconfiguration */
+    NULL,                                         /* postconfiguration */
                                                  
-    NULL,                                     /* create main configuration */
-    NULL,                                     /* init main configuration */
+    NULL,                                         /* create main configuration */
+    NULL,                                         /* init main configuration */
                                               
-    ngx_http_ssl_client_hello_create_srv_conf,       /* create server configuration */
-    ngx_http_ssl_client_hello_merge_srv_conf,        /* merge server configuration */
+    ngx_http_ssl_client_hello_create_srv_conf,    /* create server configuration */
+    ngx_http_ssl_client_hello_merge_srv_conf,     /* merge server configuration */
 
-    NULL,                                     /* create location configuration */
-    NULL                                      /* merge location configuration */
+    NULL,                                         /* create location configuration */
+    NULL                                          /* merge location configuration */
 };
 
 
 ngx_module_t  ngx_http_ssl_client_hello_module = {
     NGX_MODULE_V1,
-    &ngx_http_ssl_client_hello_module_ctx,  /* module context */
-    ngx_http_ssl_client_hello_commands,     /* module directives */
-    NGX_HTTP_MODULE,                 /* module type */
-    NULL,                            /* init master */
-    NULL,                            /* init module */
-    NULL,                            /* init process */
-    NULL,                            /* init thread */
-    NULL,                            /* exit thread */
-    NULL,                            /* exit process */
-    NULL,                            /* exit master */
+    &ngx_http_ssl_client_hello_module_ctx,    /* module context */
+    ngx_http_ssl_client_hello_commands,       /* module directives */
+    NGX_HTTP_MODULE,                          /* module type */
+    NULL,                                     /* init master */
+    NULL,                                     /* init module */
+    NULL,                                     /* init process */
+    NULL,                                     /* init thread */
+    NULL,                                     /* exit thread */
+    NULL,                                     /* exit process */
+    NULL,                                     /* exit master */
     NGX_MODULE_V1_PADDING
 };
 
@@ -87,9 +87,9 @@ static char *
 ngx_http_ssl_client_hello_merge_srv_conf(ngx_conf_t *cf, void *parent, void *child)
 {
 
-    ngx_http_ssl_srv_conf_t           *sscf;
-    ngx_http_ssl_client_hello_srv_conf_t     *prev = parent;
-    ngx_http_ssl_client_hello_srv_conf_t     *conf = child;
+    ngx_http_ssl_srv_conf_t                 *sscf;
+    ngx_http_ssl_client_hello_srv_conf_t    *prev = parent;
+    ngx_http_ssl_client_hello_srv_conf_t    *conf = child;
 
     ngx_conf_merge_value(conf->enable, prev->enable, 0);
 
