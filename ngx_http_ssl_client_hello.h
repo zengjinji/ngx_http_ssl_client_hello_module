@@ -9,6 +9,7 @@
 
 
 #define NGX_HTTP_SSL_CLIENT_HELLO_SUCCESS   SSL_CLIENT_HELLO_SUCCESS
+#define NGX_HTTP_SSL_AD_NO_RENEGOTIATION    SSL_AD_NO_RENEGOTIATION
 
 
 int ngx_http_ssl_client_hello_handler(ngx_ssl_conn_t *ssl_conn,

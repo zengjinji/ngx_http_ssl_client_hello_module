@@ -169,6 +169,11 @@ ngx_http_ssl_client_hello_handler(ngx_ssl_conn_t *ssl_conn,
     ngx_http_core_srv_conf_t    *cscf;
 
     c = ngx_ssl_get_connection(ssl_conn);
+    if (c->ssl->renegotiation || c->ssl->handshaked) {
+        *al = NGX_HTTP_SSL_AD_NO_RENEGOTIATION;
+        return NGX_HTTP_SSL_AD_NO_RENEGOTIATION;
+    }
+
     hc = c->data;
 
     if (ngx_http_ssl_client_server_name(ssl_conn, c, &host) != NGX_OK) {
